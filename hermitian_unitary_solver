@@ -1,0 +1,59 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Sets a seed for random result
+np.random.seed(0)
+
+# Matrix size
+N = 10
+
+# Generates random complex matrix A
+A = np.random.randn(N, N) + 1j * np.random.randn(N, N)
+
+# Makes it Hermitian: H = (A + A†)/2
+H = (A + A.conj().T) / 2
+
+# Diagonalizes it (to get eigenvalues)
+eigvals_H = np.linalg.eigvalsh(H)  # eigvalsh is for Hermitian matrices
+
+# Plots on the complex plane
+plt.figure(figsize=(6, 6))
+plt.scatter(eigvals_H.real, eigvals_H.imag, color='blue', label='Hermitian eigenvalues')
+plt.axhline(0, color='gray', linestyle='--')
+plt.axvline(0, color='gray', linestyle='--')
+plt.title('Eigenvalues of a Hermitian Matrix')
+plt.xlabel('Real part')
+plt.ylabel('Imaginary part')
+plt.grid(True)
+plt.legend()
+plt.axis('equal')
+plt.show()
+
+# Generates a random complex matrix
+Z = np.random.randn(N, N) + 1j * np.random.randn(N, N)
+
+# Uses QR decomposition to get a unitary matrix
+Q, R = np.linalg.qr(Z)
+
+# Ensure it's truly unitary
+D = np.diag(np.exp(1j * np.angle(np.diag(R))))
+U = Q @ D
+
+# Diagonalizes it
+eigvals_U = np.linalg.eigvals(U)
+
+# Plots on the complex plane
+plt.figure(figsize=(6, 6))
+plt.scatter(eigvals_U.real, eigvals_U.imag, color='green', label='Unitary eigenvalues')
+# Draws unit circle for reference
+theta = np.linspace(0, 2 * np.pi, 300)
+plt.plot(np.cos(theta), np.sin(theta), 'r--', label='Unit circle')
+plt.axhline(0, color='gray', linestyle='--')
+plt.axvline(0, color='gray', linestyle='--')
+plt.title('Eigenvalues of a Unitary Matrix')
+plt.xlabel('Real part')
+plt.ylabel('Imaginary part')
+plt.grid(True)
+plt.legend()
+plt.axis('equal')
+plt.show()
